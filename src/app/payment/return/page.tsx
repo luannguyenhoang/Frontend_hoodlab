@@ -1,11 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { orderService, Order } from "../../../services/orderService";
 
-export default function PaymentReturnPage() {
+function PaymentReturnContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [loading, setLoading] = useState(true);
@@ -175,6 +175,20 @@ export default function PaymentReturnPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function PaymentReturnPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-gray-600">Đang tải...</p>
+        </div>
+      </div>
+    }>
+      <PaymentReturnContent />
+    </Suspense>
   );
 }
 

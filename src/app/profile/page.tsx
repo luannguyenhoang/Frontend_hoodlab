@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useSelector, useDispatch } from "react-redux";
-import { RootState } from "../../redux/store";
+import { RootState, AppDispatch } from "../../redux/store";
 import { userService, UpdateProfileRequest, ChangePasswordRequest } from "../../services/userService";
 import { User } from "../../services/authService";
 import { loginSuccess, logout } from "../../redux/actions/authActions";
@@ -12,7 +12,7 @@ import { FaUser, FaPhone, FaMapMarkerAlt, FaLock, FaEye, FaEyeSlash } from "reac
 
 export default function ProfilePage() {
   const router = useRouter();
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const { token, user: authUser } = useSelector((state: RootState) => state.auth);
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
@@ -108,7 +108,7 @@ export default function ProfilePage() {
       // Update Redux store - loginSuccess takes (token, user) as separate parameters
       const currentToken = token || (typeof window !== 'undefined' ? localStorage.getItem('token') : null);
       if (currentToken) {
-        dispatch(loginSuccess(currentToken, updatedUser));
+        dispatch(loginSuccess(currentToken, updatedUser) as any);
       }
       
       // Update local state with new user data
